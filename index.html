@@ -135,6 +135,10 @@ Introduction
   </p>
   <p>Figure 1: Theoretical braking distance against speed</p>
   <div id="chart_div" style="width: 600px; height: 400px;"></div>
+  
+  <p>Figure 2: Stopping distance at 70 mph (UK Highway Code)</p>
+  <div id="pie_div" style="width: 600px; height: 400px;"></div>
+  
   <hr>
   <h3 id="References">References</h3>
   <div class="ex1">
@@ -145,6 +149,9 @@ References
   <script type="text/javascript">
   google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawChart);
+  function drawCharts() {
+  drawChart();
+  drawPieChart();
     
   function drawChart() {
     var data = new google.visualization.DataTable();
@@ -171,6 +178,21 @@ References
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(data, options);
   }
+ function drawPieChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Distance type', 'Metres'],
+    ['Thinking distance', 21],
+    ['Braking distance', 75]
+  ]);
+
+  var options = {
+    title: 'Stopping Distance at 70 mph (96 m total)',
+    colors: ['#ff9900', '#3366cc']
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('pie_div'));
+  chart.draw(data, options);
+} 
 </script>
 
 <div id="last-updated">Loading last update time...</div>
