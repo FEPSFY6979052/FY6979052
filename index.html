@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><b>ENG0018 Computer Laboratory 2026/27</b></title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
   <style>
     table {
       font-family: arial, sans-serif;
@@ -138,6 +141,36 @@ Introduction
 References
 </pre>
   </div>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Speed (km/h)');
+      data.addColumn('number', 'Dry road (μ = 0.8)');
+      data.addColumn('number', 'Wet road (μ = 0.4)');
+
+      data.addRows([
+        [30, 4.4, 8.8],
+        [50, 12.3, 24.6],
+        [70, 24.1, 48.2],
+        [90, 39.8, 79.6],
+        [110, 59.5, 119.0]
+      ]);
+
+      var options = {
+        title: 'Theoretical Braking Distance vs Speed',
+        hAxis: { title: 'Speed (km/h)' },
+        vAxis: { title: 'Braking distance (m)' },
+        colors: ['#3366cc', '#dc3912'],
+        legend: { position: 'bottom' }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+  </script>
 <div id="last-updated">Loading last update time...</div>
 
 <button onclick="verifyLastUpdatedTime()" style="display: block; margin: 10px auto; padding: 8px 16px;">
@@ -146,8 +179,8 @@ References
 
 <script>
     async function getLastUpdatedTime() {
-        const username = 'FEPSFY6979052';   // <-- replace with your GitHub username
-        const repo = 'FY6979052';       // <-- replace with your repository name
+        const username = 'FEPSFY6979052';
+        const repo = 'FY6979052';
 
         const url = `https://api.github.com/repos/${username}/${repo}/commits`;
 
