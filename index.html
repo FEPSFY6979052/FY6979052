@@ -146,8 +146,8 @@ References
 
 <script>
     async function getLastUpdatedTime() {
-        const username = 'nr0025';   // <-- replace with your GitHub username
-        const repo = 'FY0025';       // <-- replace with your repository name
+        const username = 'FEPSFY6979052';   // <-- replace with your GitHub username
+        const repo = 'FY6979052';       // <-- replace with your repository name
 
         const url = `https://api.github.com/repos/${username}/${repo}/commits`;
 
@@ -186,7 +186,32 @@ References
     }
 
     // Initial load to display the time on page load
-    window.onload = getLastUpdatedTime;
+    window.addEventListener("load", getLastUpdatedTime);
 </script>
+<p id="totalWordCount"></p>
+
+<hr>
+
+<script>
+  function displayWordCount(sectionId, outputId) {
+    const text = document.getElementById(sectionId).textContent;
+
+    const wordArray = text.trim().split(/\s+/);
+
+    const wordCount = wordArray.length;
+
+    return wordCount;
+  }
+
+  function displayTotalWordCount() {
+    const IntroductionCount = displayWordCount("Introduction");
+    const AnalysisCount = displayWordCount("Analysis-and-discussion");
+    const AbstractCount = displayWordCount("Abstract")
+    const totalWordCount = IntroductionCount + AnalysisCount + AbstractCount;     
+    document.getElementById("totalWordCount").innerText = `Total word count: ${totalWordCount}`;
+  }
+
+  window.addEventListener("load", displayTotalWordCount);
+</script>  
 </body>
 </html>
