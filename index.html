@@ -148,11 +148,11 @@ References
   </div>
   <script type="text/javascript">
   google.charts.load('current', { 'packages': ['corechart'] });
-  google.charts.setOnLoadCallback(drawChart);
+  google.charts.setOnLoadCallback(drawCharts);
   function drawCharts() {
-  drawChart();
-  drawPieChart();
-    
+    drawChart();
+    drawPieChart();
+  }
   function drawChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('number', 'Speed (km/h)');
