@@ -133,11 +133,11 @@ Introduction
     </math>
     where <i>v</i> is the initial speed, &mu; is the tyre-road friction coefficient and <i>g</i> is gravitational acceleration.
   </p>
-  <p>Figure 1: Theoretical braking distance against speed</p>
-  <div id="chart_div" style="width: 600px; height: 400px;"></div>
+  <p>Figure 1: Theoretical dry-road braking distance against speed for different braking systems</p>
+  <div id="line_div" style="width: 600px; height: 400px;"></div>
   
-  <p>Figure 2: Stopping distance at 70 mph (UK Highway Code)</p>
-  <div id="pie_div" style="width: 600px; height: 400px;"></div>
+  <p>Figure 2: Braking distance from 100 km/h on dry and wet roads for different braking systems</p>
+  <div id="bar_div" style="width: 600px; height: 400px;"></div>
   
   <hr>
   <h3 id="References">References</h3>
@@ -149,50 +149,66 @@ References
   <script type="text/javascript">
   google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawCharts);
+
   function drawCharts() {
-    drawChart();
-    drawPieChart();
+    drawLineChart();
+    drawBarChart();
   }
-  function drawChart() {
+  function brakingDistance(speedKmh, decelG) {
+    var v = speedKmh / 3.6;         
+    var g = 9.81;
+    return Math.round((v * v) / (2 * decelG * g) * 10) / 10;
+  }
+  var DRY  = { drum: 0.6,  disc: 0.8,  abs: 0.9  };
+  var WET  = { drum: 0.35, disc: 0.45, abs: 0.55 };
+
+  function drawLineChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('number', 'Speed (km/h)');
-    data.addColumn('number', 'Dry road (μ = 0.8)');
-    data.addColumn('number', 'Wet road (μ = 0.4)');
+    data.addColumn('number', 'Drum brakes');
+    data.addColumn('number', 'Disc brakes');
+    data.addColumn('number', 'Disc brakes + ABS');
 
-    data.addRows([
-      [30, 4.4, 8.8],
-      [50, 12.3, 24.6],
-      [70, 24.1, 48.2],
-      [90, 39.8, 79.6],
-      [110, 59.5, 119.0]
-    ]);
+    var speeds = [30, 50, 70, 90, 110];
+    var rows = speeds.map(function (s) {
+      return [s,
+              brakingDistance(s, DRY.drum),
+              brakingDistance(s, DRY.disc),
+              brakingDistance(s, DRY.abs)];
+    });
+    data.addRows(rows);
 
     var options = {
-      title: 'Theoretical Braking Distance vs Speed',
+      title: 'Theoretical Braking Distance vs Speed (Dry Road)',
       hAxis: { title: 'Speed (km/h)' },
       vAxis: { title: 'Braking distance (m)' },
-      colors: ['#3366cc', '#dc3912'],
+      colors: ['#dc3912', '#3366cc', '#109618'],
       legend: { position: 'bottom' }
     };
 
-    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    var chart = new google.visualization.LineChart(document.getElementById('line_div'));
     chart.draw(data, options);
   }
- function drawPieChart() {
-  var data = google.visualization.arrayToDataTable([
-    ['Distance type', 'Metres'],
-    ['Thinking distance', 21],
-    ['Braking distance', 75]
-  ]);
 
-  var options = {
-    title: 'Stopping Distance at 70 mph (96 m total)',
-    colors: ['#ff9900', '#3366cc']
-  };
+  function drawBarChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Braking system', 'Dry road', 'Wet road'],
+      ['Drum brakes',       brakingDistance(100, DRY.drum), brakingDistance(100, WET.drum)],
+      ['Disc brakes',       brakingDistance(100, DRY.disc), brakingDistance(100, WET.disc)],
+      ['Disc brakes + ABS', brakingDistance(100, DRY.abs),  brakingDistance(100, WET.abs)]
+    ]);
 
-  var chart = new google.visualization.PieChart(document.getElementById('pie_div'));
-  chart.draw(data, options);
-} 
+    var options = {
+      title: 'Braking Distance from 100 km/h by Braking System',
+      hAxis: { title: 'Braking system' },
+      vAxis: { title: 'Braking distance (m)' },
+      colors: ['#3366cc', '#ff9900'],
+      legend: { position: 'bottom' }
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('bar_div'));
+    chart.draw(data, options);
+  }
 </script>
 
 <div id="last-updated">Loading last update time...</div>
